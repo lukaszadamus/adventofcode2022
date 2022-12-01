@@ -1,4 +1,4 @@
-﻿var input = File.ReadAllLines("input.txt").Aggregate(new List<List<long>>() { new List<long>() }, (a, b) =>
+﻿var input = File.ReadAllLines("input.txt").Aggregate(new List<List<long>>() { new() }, (a, b) =>
 {
     if (b.Trim().Length != 0)
     {
