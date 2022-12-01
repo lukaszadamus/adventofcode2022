@@ -1,18 +1,15 @@
 ﻿var input = File.ReadAllLines("input.txt").Aggregate(new List<List<long>>() { new List<long>() }, (a, b) =>
 {
-    if (b.Trim().Length == 0)
-    {
-        a.Add(new());
-    }
-    else
+    if (b.Trim().Length != 0)
     {
         a.Last().Add(long.Parse(b));
     }
+    else
+    {
+        a.Add(new());
+    }
     return a;
-}, c => c);
+}, c => c.Select(x => x.Sum()).OrderByDescending(x => x));
 
-var resultA = input.Select(x => x.Sum()).OrderByDescending(x => x).First();
-Console.WriteLine($"ResultA: {resultA}");
-
-var resultB = input.Select(x => x.Sum()).OrderByDescending(x => x).Take(3).Sum();
-Console.WriteLine($"ResultA: {resultB}");
+Console.WriteLine($"ResultA: {input.First()}");
+Console.WriteLine($"ResultA: {input.Take(3).Sum()}");
