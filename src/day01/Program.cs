@@ -12,4 +12,4 @@
 }, c => c.Select(x => x.Sum()).OrderByDescending(x => x));
 
 Console.WriteLine($"ResultA: {input.First()}");
-Console.WriteLine($"ResultA: {input.Take(3).Sum()}");
+Console.WriteLine($"ResultB: {input.Take(3).Sum()}");
