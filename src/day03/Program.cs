@@ -17,4 +17,4 @@ var resultB = input.Aggregate(acc, (a, b) =>
 Console.WriteLine($"ResultA: {resultA}");
 Console.WriteLine($"ResultB: {resultB}");
 
-int P(char acc) => char.IsLower(acc) ? (int)acc - 96 : (int)acc - 38;
+int P(char c) => char.IsLower(c) ? (int)c - 96 : (int)c - 38;
