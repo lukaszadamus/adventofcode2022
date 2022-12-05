@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-Console.WriteLine($"ResultA: {Solve(Parse(), true)}");
+﻿Console.WriteLine($"ResultA: {Solve(Parse(), true)}");
 Console.WriteLine($"ResultB: {Solve(Parse(), false)}");
 
 string Solve(Input input, bool moveOneByOne)
