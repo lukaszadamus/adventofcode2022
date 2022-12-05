@@ -14,40 +14,30 @@ string Solve(Input input, bool moveOneByOne)
             input.Stacks[move.From].RemoveRange(input.Stacks[move.From].Count - take, take);
         }
     }
-
-    StringBuilder sb = new StringBuilder();
-    for (var i = 1; i <= input.Stacks.Count; i++)
-    {
-        sb.Append(input.Stacks[i].Last());
-    }
-    return sb.ToString();
+    return string.Join("", input.Stacks.Select(x => x.Last()));    
 }
 
 Input Parse()
 {
-    var input = new Input(new Dictionary<int, List<char>>(), new List<Move>());
-    var readingMoves = false;
+    var input = new Input(new List<List<char>>(), new List<Move>());
     var lines = File.ReadAllLines("input.txt");
 
     foreach (var line in lines)
     {
-        if (line.StartsWith(" 1"))
+        if (line.StartsWith("move"))
+        {
+            var moveData = line.Split(" ");
+            input.Moves.Add(new Move(int.Parse(moveData[1]), int.Parse(moveData[3]) - 1, int.Parse(moveData[5]) - 1));
+        }
+        else if (line.StartsWith(" 1") || line.Length == 0)
         {
             continue;
         }
-
-        if (line.Length == 0)
-        {
-            readingMoves = true;
-            continue;
-        }
-
-
-        if (!readingMoves)
+        else
         {
             var skip = 0;
             var take = 4;
-            var stackId = 1;
+            var stackId = 0;
             while (true)
             {
                 var subLine = line.Skip(skip).Take(take).ToArray();
@@ -57,9 +47,9 @@ Input Parse()
                     break;
                 }
 
-                if (!input.Stacks.ContainsKey(stackId))
+                if (input.Stacks.Count < stackId + 1)
                 {
-                    input.Stacks[stackId] = new List<char>();
+                    input.Stacks.Add(new List<char>());
                 }
 
                 if (char.IsLetter(subLine[1]))
@@ -71,20 +61,9 @@ Input Parse()
                 stackId++;
             }
         }
-        else
-        {
-            var moveData = line
-            .Replace("move ", "")
-            .Replace(" from ", ",")
-            .Replace(" to ", ",")
-            .Split(",")
-            .Select(x => int.Parse(x))
-            .ToArray();
-            input.Moves.Add(new Move(moveData[0], moveData[1], moveData[2]));
-        }
     }
     return input;
 }
 
-record Input(Dictionary<int, List<char>> Stacks, List<Move> Moves);
+record Input(List<List<char>> Stacks, List<Move> Moves);
 record Move(int Quantity, int From, int To);
