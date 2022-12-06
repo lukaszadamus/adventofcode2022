@@ -6,7 +6,7 @@ int Solve(string input, int bufferLength)
 {
     var processed = 0;
     List<char> buffer = new();
-    foreach (var c in File.ReadAllText("input.txt"))
+    foreach (var c in input)
     {
         processed++;
         buffer.Add(c);
