@@ -2,6 +2,10 @@ public class Device
 {
     private readonly long _totalDiskSPace;
     public Directory Root { get; set; }
+    private Directory CurrDir = null;
+    public Dictionary<string, Entry> FlatFileSystem { get; }
+
+    public long UnusedSpace() => _totalDiskSPace - Root.Size();
 
     public Device(long totalDiskSpace)
     {
@@ -10,9 +14,6 @@ public class Device
         FlatFileSystem.Add("/", Root);
         _totalDiskSPace = totalDiskSpace;
     }
-
-    private Directory CurrDir = null;
-    public Dictionary<string, Entry> FlatFileSystem { get; }
 
     public void Boot(IEnumerable<string> commands)
     {
@@ -55,16 +56,14 @@ public class Device
             FlatFileSystem.Add(entry.Path, entry);
             CurrDir.Entries.Add(entry);
         }
-    }
-
-    public long UnusedSpace() => _totalDiskSPace - Root.Size();
+    }    
 }
 
 public abstract class Entry
 {
     public string Path { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
-    public Directory? Parent { get; set; }
+    public Directory Parent { get; set; }
     public abstract long Size();
 
 }
@@ -88,7 +87,7 @@ public class Directory : Entry
         Path = parent.Path.EndsWith("/") ? $"{parent.Path}{Name}" : $"{parent.Path}/{Name}";
     }
 
-    public List<Entry>? Entries { get; set; } = new List<Entry>();
+    public List<Entry> Entries { get; set; } = new List<Entry>();
 
     private long? CachedSize = null;
     public override long Size()
