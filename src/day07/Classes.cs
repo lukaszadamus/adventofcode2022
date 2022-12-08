@@ -4,7 +4,6 @@ public class Device
     public Directory Root { get; set; }
     private Directory CurrDir = null;
     public Dictionary<string, Entry> FlatFileSystem { get; }
-
     public long UnusedSpace() => _totalDiskSPace - Root.Size();
 
     public Device(long totalDiskSpace)
