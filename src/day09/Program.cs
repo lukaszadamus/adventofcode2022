@@ -1,5 +1,6 @@
-﻿Console.WriteLine($"ResultA: {Solve(ReadMoves(), 2)}");
-Console.WriteLine($"ResultB: {Solve(ReadMoves(), 10)}");
+﻿var moves = ReadMoves();
+Console.WriteLine($"ResultA: {Solve(moves, 2)}");
+Console.WriteLine($"ResultB: {Solve(moves, 10)}");
 
 int Solve(List<Move> moves, int numberOfKnots)
 {
@@ -18,7 +19,6 @@ int Solve(List<Move> moves, int numberOfKnots)
 
 void Move(IEnumerable<Knot> knots, Move move)
 {
-    
     for (int i = 0; i < move.Steps; i++)
     {
         var currentPosition = knots.First().Positions.Last();
@@ -30,8 +30,8 @@ void Move(IEnumerable<Knot> knots, Move move)
             'D' => new Position(currentPosition.X, currentPosition.Y - 1),
             _ => currentPosition,
         };
-        knots.First().Positions.Add(newPosition);        
-        KeepUp(knots, move.Direction);        
+        knots.First().Positions.Add(newPosition);
+        KeepUp(knots, move.Direction);
     }
 
     void KeepUp(IEnumerable<Knot> knots, char direction)
@@ -46,9 +46,10 @@ void Move(IEnumerable<Knot> knots, Move move)
                 var head = pair.First().Positions.Last();
                 var tail = pair.Last().Positions.Last();
 
-                if (Math.Abs(head.X - tail.X) > 1 || Math.Abs(head.Y - tail.Y) > 1)
+                if (Math.Abs(head.X - tail.X) > 1
+                    || Math.Abs(head.Y - tail.Y) > 1)
                 {
-                    newPosition = new Position(tail.X + Find(head.X, tail.X), tail.Y + Find(head.Y, tail.Y));
+                    newPosition = new Position(Find(head.X, tail.X), Find(head.Y, tail.Y));
                 }
                 if (newPosition is not null)
                 {
@@ -64,9 +65,9 @@ void Move(IEnumerable<Knot> knots, Move move)
 
     int Find(int head, int tail) => (head - tail) switch
     {
-        > 0 => 1,
-        < 0 => -1,
-        _ => 0,
+        > 0 => tail + 1,
+        < 0 => tail - 1,
+        _ => tail,
     };
 }
 
