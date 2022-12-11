@@ -2,7 +2,6 @@ public class Game
 {
     private readonly bool _reduceWorry;
     public List<Monkey> Monkeys { get; set; }
-    
     public Game(bool reduceWorry = true)
     {
         Monkeys = File.ReadAllLines("input.txt").Chunk(7).Select(x => new Monkey(x)).ToList();
@@ -26,11 +25,8 @@ public class Monkey
 {
     public int Id { get; }
     public List<ulong> Items { get; private set; }
-
     public Operation Operation { get; private set; }
-
     public Divisible Test { get; private set; }
-
     public ulong Inspections { get; private set; } = 0;
 
     public Monkey(string[] lines)
@@ -118,9 +114,9 @@ public class Monkey
         if (ele[0] == "divisible")
         {
             var divisor = ulong.Parse(ele[2]);
-            var trueMonekyId = int.Parse(lines[1].Replace("    If true: ", "").Split(" ").Last());
-            var falseMonekyId = int.Parse(lines[2].Replace("    If false: ", "").Split(" ").Last());
-            Test = new Divisible(divisor, trueMonekyId, falseMonekyId);
+            var trueMonkeyId = int.Parse(lines[1].Replace("    If true: ", "").Split(" ").Last());
+            var falseMonkeyId = int.Parse(lines[2].Replace("    If false: ", "").Split(" ").Last());
+            Test = new Divisible(divisor, trueMonkeyId, falseMonkeyId);
         }
     }
 }
@@ -156,10 +152,6 @@ public class Multiplication : Operation
 
 public class Pow2 : Operation
 {
-    public Pow2()
-    {
-    }
-
     public override ulong Execute(ulong worryLevel) => checked(worryLevel * worryLevel);
 }
 
@@ -175,6 +167,7 @@ public class Divisible
         TrueMonkeyId = trueMonkeyId;
         FalseMonkeyId = falseMonkeyId;
     }
+
     public int Execute(ulong worryLevel)
         => worryLevel % (ulong)Divisor == 0 ? TrueMonkeyId : FalseMonkeyId;
 }
